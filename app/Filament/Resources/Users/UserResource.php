@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
+    protected static ?string $navigationLabel = 'Tambah User';
+
+    protected static ?string $modelLabel = 'User';
+
+    protected static ?string $pluralModelLabel = 'Kelola User';
+
     protected static ?string $model = User::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;

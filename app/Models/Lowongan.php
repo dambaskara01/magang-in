@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lowongan extends Model
 {
-    //
+    protected $fillable = [
+    'nama_posisi',
+    'divisi',
+    'deskripsi',
+    'kuota',
+    'lokasi',
+    'status',
+];
 }
