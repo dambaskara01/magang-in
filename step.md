@@ -116,7 +116,8 @@ DB_PASSWORD=
 ## Install package Filament
 
 ```bash
-composer require filament/filament:"^3.2" -W
+composer require filament/filament:"^4.0"
+
 ```
 
 ---
@@ -686,6 +687,497 @@ php artisan serve
 ✅ Filament Admin Panel  
 
 ---
+
+# COMMAND PENTING LARAVEL + FILAMENT
+
+## Menjalankan Project
+
+```bash
+php artisan serve
+```
+
+Akses:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+# INSTALL DEPENDENCY
+
+## Install vendor Laravel
+
+```bash
+composer install
+```
+
+## Install node modules
+
+```bash
+npm install
+```
+
+---
+
+# ENVIRONMENT
+
+## Copy file env
+
+```bash
+cp .env.example .env
+```
+
+## Generate app key
+
+```bash
+php artisan key:generate
+```
+
+---
+
+# DATABASE
+
+## Migrasi database
+
+```bash
+php artisan migrate
+```
+
+## Reset database + migrate ulang
+
+```bash
+php artisan migrate:fresh
+```
+
+## Reset database + seed otomatis
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+## Jalankan seeder saja
+
+```bash
+php artisan db:seed
+```
+
+---
+
+# CACHE & ERROR FIX
+
+## Clear cache Laravel
+
+```bash
+php artisan optimize:clear
+```
+
+## Clear config cache
+
+```bash
+php artisan config:clear
+```
+
+## Clear route cache
+
+```bash
+php artisan route:clear
+```
+
+## Clear view cache
+
+```bash
+php artisan view:clear
+```
+
+## Composer autoload refresh
+
+```bash
+composer dump-autoload
+```
+
+---
+
+# FILAMENT COMMAND
+
+## Install Filament
+
+```bash
+php artisan filament:install --panels
+```
+
+---
+
+## Membuat resource Filament
+
+```bash
+php artisan make:filament-resource User
+```
+
+```bash
+php artisan make:filament-resource Lowongan
+```
+
+```bash
+php artisan make:filament-resource Lamaran
+```
+
+---
+
+## Membuat widget chart
+
+```bash
+php artisan make:filament-widget StatistikLamaran --chart
+```
+
+---
+
+# MODEL & MIGRATION
+
+## Membuat model + migration sekaligus
+
+```bash
+php artisan make:model Lowongan -m
+```
+
+```bash
+php artisan make:model Lamaran -m
+```
+
+```bash
+php artisan make:model Pendaftar -m
+```
+
+---
+
+# CONTROLLER & ROUTE
+
+## Membuat controller
+
+```bash
+php artisan make:controller NamaController
+```
+
+---
+
+# DEBUGGING
+
+## Cek syntax PHP
+
+```bash
+php -l nama_file.php
+```
+
+Contoh:
+
+```bash
+php -l app/Models/User.php
+```
+
+---
+
+# GIT & GITHUB
+
+## Init git
+
+```bash
+git init
+```
+
+## Add semua file
+
+```bash
+git add .
+```
+
+## Commit
+
+```bash
+git commit -m "first commit"
+```
+
+## Connect repository GitHub
+
+```bash
+git remote add origin URL_REPOSITORY
+```
+
+## Push ke GitHub
+
+```bash
+git push -u origin main
+```
+
+---
+
+# CLONE PROJECT DI LAPTOP KAMPUS
+
+## Clone repository
+
+```bash
+git clone URL_REPOSITORY
+```
+
+## Masuk folder
+
+```bash
+cd nama-project
+```
+
+## Install dependency
+
+```bash
+composer install
+```
+
+```bash
+npm install
+```
+
+## Copy env
+
+```bash
+cp .env.example .env
+```
+
+## Generate key
+
+```bash
+php artisan key:generate
+```
+
+## Setup database
+
+Buat database baru di phpMyAdmin:
+
+```text
+magang_in
+```
+
+---
+
+## Jalankan migrate + seed
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+---
+
+## Jalankan server
+
+```bash
+php artisan serve
+```
+
+---
+
+# LOGIN TEST
+
+## Admin
+
+```text
+email: admin@mail.com
+password: password
+```
+
+---
+
+## Mahasiswa
+
+```text
+email: mhs@mail.com
+password: password
+```
+
+---
+
+# STRUKTUR DATABASE
+
+## users
+
+Menyimpan akun login:
+- admin
+- mahasiswa
+
+Field penting:
+- id
+- name
+- email
+- password
+- role
+
+---
+
+## pendaftars
+
+Menyimpan data mahasiswa/pelamar.
+
+Field:
+- id
+- user_id
+- nama
+- dll
+
+Relasi:
+- pendaftars.user_id → users.id
+
+---
+
+## lowongans
+
+Menyimpan data lowongan magang.
+
+Field:
+- id
+- nama_posisi
+- nama_perusahaan
+- divisi
+- deskripsi
+- kuota
+- lokasi
+- status
+
+---
+
+## lamarans
+
+Menyimpan data pengajuan lamaran mahasiswa.
+
+Field:
+- id
+- pendaftar_id
+- lowongan_id
+- tanggal_lamaran
+- status
+- catatan
+
+Status:
+- pending
+- diproses
+- diterima
+- ditolak
+
+---
+
+# RELASI MODEL
+
+## User
+
+```php
+hasOne(Pendaftar::class)
+```
+
+---
+
+## Pendaftar
+
+```php
+belongsTo(User::class)
+hasMany(Lamaran::class)
+```
+
+---
+
+## Lowongan
+
+```php
+hasMany(Lamaran::class)
+```
+
+---
+
+## Lamaran
+
+```php
+belongsTo(Pendaftar::class)
+belongsTo(Lowongan::class)
+```
+
+---
+
+# ROLE SYSTEM
+
+## Admin
+Bisa:
+- tambah lowongan
+- edit lowongan
+- hapus lowongan
+- melihat semua lamaran
+- mengubah status lamaran
+
+---
+
+## Mahasiswa
+Bisa:
+- melihat lowongan
+- apply lowongan
+- melihat status lamaran sendiri
+
+Tidak bisa:
+- tambah lowongan
+- edit lowongan
+- akses data admin
+
+---
+
+# ERROR YANG PERNAH TERJADI
+
+## 403 Forbidden
+
+Penyebab:
+akses dibatasi role admin.
+
+Solusi:
+atur permission menggunakan:
+
+```php
+canEdit()
+canCreate()
+```
+
+---
+
+## Unknown column 'user_id'
+
+Penyebab:
+tabel menggunakan `id`, bukan `user_id`.
+
+Solusi:
+sesuaikan query dengan struktur tabel.
+
+---
+
+## Cannot redeclare static heading
+
+Penyebab:
+property `$heading` dibuat static.
+
+Salah:
+
+```php
+protected static ?string $heading
+```
+
+Benar:
+
+```php
+protected ?string $heading
+```
+
+---
+
+# FITUR YANG SUDAH DIBUAT
+
+- Login admin & mahasiswa
+- CRUD lowongan
+- Apply lamaran
+- Status lamaran
+- Role access
+- Sidebar dinamis
+- Statistik chart dashboard admin
+- Seeder dummy data
+- Filament admin panel
 
 # 👨‍💻 AUTHOR
 
