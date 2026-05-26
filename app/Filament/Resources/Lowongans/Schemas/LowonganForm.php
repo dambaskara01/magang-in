@@ -15,6 +15,9 @@ class LowonganForm
             ->components([
                 TextInput::make('nama_posisi')
                     ->required(),
+                TextInput::make('nama_perusahaan')
+                    ->label('Nama Perusahaan')
+                    ->required(),
                 TextInput::make('divisi')
                     ->required(),
                 Textarea::make('deskripsi')

@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class LowonganResource extends Resource
 {
@@ -21,6 +22,26 @@ class LowonganResource extends Resource
     protected static ?string $model = Lowongan::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    public static function canEdit($record): bool
+    {
+        return Auth::check() && Auth::user()->role === 'admin';
+    }
+
+    public static function canCreate(): bool
+    {
+        return Auth::check() && Auth::user()->role === 'admin';
+    }
+
+    public static function canCreateAnother(): bool
+    {
+        return Auth::check() && Auth::user()->role === 'admin';
+    }
+
+    public static function canDelete($record): bool
+    {
+        return Auth::check() && Auth::user()->role === 'admin';
+    }
 
     public static function form(Schema $schema): Schema
     {

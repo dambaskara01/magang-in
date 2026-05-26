@@ -16,6 +16,8 @@ class LowongansTable
             ->columns([
                 TextColumn::make('nama_posisi')
                     ->searchable(),
+                TextColumn::make('nama_perusahaan')
+                    ->label('Perusahaan'),
                 TextColumn::make('divisi')
                     ->searchable(),
                 TextColumn::make('kuota')

@@ -29,15 +29,15 @@ class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Generate form and table';
 
-    // public static function shouldRegisterNavigation(): bool
-    // {
-    //     return Auth::check() && Auth::user()->role === 'admin';
-    // }
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::check() && Auth::user()->role === 'admin';
+    }
 
-    // public static function canAccess(): bool
-    // {
-    //     return Auth::check() && Auth::user()->role === 'admin';
-    // }
+    public static function canAccess(): bool
+    {
+        return Auth::check() && Auth::user()->role === 'admin';
+    }
 
     public static function form(Schema $schema): Schema
     {

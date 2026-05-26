@@ -8,6 +8,7 @@ class Lowongan extends Model
 {
     protected $fillable = [
     'nama_posisi',
+    'nama_perusahaan',
     'divisi',
     'deskripsi',
     'kuota',
