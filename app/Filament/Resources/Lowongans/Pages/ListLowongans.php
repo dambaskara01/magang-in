@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Lowongans\Pages;
 use App\Filament\Resources\Lowongans\LowonganResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Support\Facades\Auth;
 
 class ListLowongans extends ListRecords
 {
@@ -12,8 +13,12 @@ class ListLowongans extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [
-            CreateAction::make(),
-        ];
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return [
+                CreateAction::make(),
+            ];
+        }
+
+        return [];
     }
 }

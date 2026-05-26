@@ -23,6 +23,16 @@ class LowonganResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    public static function canViewAny(): bool
+    {
+        return Auth::check(); // semua user boleh lihat
+    }
+
+    public static function canView($record): bool
+    {
+        return Auth::check();
+    }
+
     public static function canEdit($record): bool
     {
         return Auth::check() && Auth::user()->role === 'admin';
