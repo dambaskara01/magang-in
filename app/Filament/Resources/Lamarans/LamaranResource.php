@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
 
 class LamaranResource extends Resource
 {
+
+
     protected static ?string $navigationLabel = 'Lamaran Magang';
 
     protected static ?string $modelLabel = 'Lamaran';
@@ -28,12 +30,22 @@ class LamaranResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check();
     }
 
     public static function canAccess(): bool
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        return Auth::check();
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit($record): bool
+    {
+        return Auth::user()->role === 'admin';
     }
 
     public static function form(Schema $schema): Schema
@@ -57,5 +69,23 @@ class LamaranResource extends Resource
             'index' => ListLamarans::route('/'),
             'edit' => EditLamaran::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (Auth::user()->role === 'mahasiswa') {
+
+            $pendaftar = \App\Models\Pendaftar::where('user_id', Auth::id())->first();
+
+            if ($pendaftar) {
+                $query->where('pendaftar_id', $pendaftar->id);
+            } else {
+                $query->whereRaw('1 = 0');
+            }
+        }
+
+        return $query;
     }
 }

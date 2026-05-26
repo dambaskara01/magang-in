@@ -21,6 +21,20 @@ class LowongansTable
     {
         $isAdmin = Auth::check() && Auth::user()->role === 'admin';
         $isMahasiswa = Auth::check() && Auth::user()->role === 'mahasiswa';
+        $pendaftarId = null;
+        $hasAppliedBefore = false;
+
+        if ($isMahasiswa) {
+            $pendaftarId = Pendaftar::query()
+                ->where('user_id', Auth::id())
+                ->value('id');
+
+            if ($pendaftarId) {
+                $hasAppliedBefore = Lamaran::query()
+                    ->where('pendaftar_id', $pendaftarId)
+                    ->exists();
+            }
+        }
 
         return $table
             ->columns([
@@ -52,7 +66,7 @@ class LowongansTable
             ->recordActions([
                 Action::make('apply')
                     ->label('Ajukan Lamaran')
-                    ->visible($isMahasiswa)
+                    ->visible($isMahasiswa && ! $hasAppliedBefore)
                     ->requiresConfirmation()
                     ->form([
                         TextInput::make('nim')
@@ -93,15 +107,15 @@ class LowongansTable
                             ],
                         );
 
-                        $alreadyApplied = Lamaran::query()
+                        $hasAppliedBefore = Lamaran::query()
                             ->where('pendaftar_id', $pendaftar->id)
-                            ->where('lowongan_id', $record->id)
                             ->exists();
 
-                        if ($alreadyApplied) {
+                        if ($hasAppliedBefore) {
                             Notification::make()
                                 ->warning()
-                                ->title('Kamu sudah melamar lowongan ini')
+                                ->title('Kamu sudah pernah mengajukan lamaran')
+                                ->body('Kamu hanya bisa mengajukan satu lamaran.')
                                 ->send();
 
                             return;
